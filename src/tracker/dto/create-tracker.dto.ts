@@ -1,4 +1,5 @@
 import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { Category, Status } from "../enums";
 
 export class CreateTrackerDto {
     @IsString()
@@ -11,10 +12,10 @@ export class CreateTrackerDto {
 
     @IsString()
     @IsOptional()
-    @IsEnum(['t', 'p', 'i', 'd'])
+    @IsEnum(Status)
     status: string;
 
-    @IsEnum(['e', 's', 't'])
+    @IsEnum(Category)
     category: string;
 
     @IsInt()

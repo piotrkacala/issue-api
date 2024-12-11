@@ -4,6 +4,7 @@ import { UpdateTrackerDto } from './dto/update-tracker.dto';
 import { Tracker } from './entities/tracker.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
+import { Category, Status } from './enums';
 
 @Injectable()
 export class TrackerService {
@@ -19,7 +20,7 @@ export class TrackerService {
     tracker.status = input.status
     tracker.category = category
 
-    if (category === 's') {
+    if (category === Category.STORY) {
       //Tickets of the type "Story" can have additional "points" field
       tracker.points = input.points
     }
@@ -28,14 +29,14 @@ export class TrackerService {
     if (input.parentId) {
       parent = await this.trackerRepository.findOneBy({ id: input.parentId })
     }
-    if (category === 's' && parent?.category !== 'e') {
+    if (category === Category.STORY && parent?.category !== Category.EPIC) {
       throw new Error('Stories must belong to an Epic')
     }
-    if (category === 't' && parent?.category !== 's') {
+    if (category === Category.SUBTASK && parent?.category !== Category.STORY) {
       throw new Error('Tasks must belong to a Story')
     }
     tracker.parentId = input.parentId
-    if (category === 'e') {
+    if (category === Category.EPIC) {
       // Epics cannot be nested under any other items
       tracker.parentId = null
     }
@@ -57,7 +58,7 @@ export class TrackerService {
       throw new Error('Ticket not found')
     }
 
-    const order = ['t', 'p', 'i', 'd']//TODO
+    const order: String[] = Object.values(Status)
     const prevStatusIndex = order.indexOf(ticket.status)
     const newStatusIndex = order.indexOf(input.status)
     const statusChange = newStatusIndex - prevStatusIndex

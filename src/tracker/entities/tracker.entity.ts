@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Category,Status } from '../enums';
 
 @Entity()
 export class Tracker {
@@ -11,13 +12,7 @@ export class Tracker {
     @Column({ type: 'varchar', length: 500, default: '' })
     description: string;
 
-    @Column({ type: 'enum', enum: ['t', 'p', 'i', 'd'], default: 't' })
-    /**
-     * t - TODO
-     * p - IN_PROGRESS
-     * i - IN_REVIEW
-     * d - DONE
-     */
+    @Column({ type: 'enum', enum: Status, default: Status.TODO })
     status: string;
 
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(3)' })
@@ -26,12 +21,7 @@ export class Tracker {
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(3)' })
     updated_date: Date;
 
-    @Column({ type: 'enum', enum: ['e', 's', 't'] })
-    /**
-     * e - Epic
-     * s - Story
-     * t - Subtask
-     */
+    @Column({ type: 'enum', enum: Category })
     category: string;
 
     @Column({ nullable: true, type: 'integer' })
