@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TrackerService } from './tracker.service';
 import { CreateTrackerDto } from './dto/create-tracker.dto';
 import { UpdateTrackerDto } from './dto/update-tracker.dto';
@@ -8,6 +8,7 @@ export class TrackerController {
   constructor(private readonly trackerService: TrackerService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createTrackerDto: CreateTrackerDto) {
     return this.trackerService.create(createTrackerDto);
   }
@@ -23,6 +24,7 @@ export class TrackerController {
   }
 
   @Patch(':id')
+  @UsePipes(new ValidationPipe())
   update(@Param('id') id: string, @Body() updateTrackerDto: UpdateTrackerDto) {
     return this.trackerService.update(+id, updateTrackerDto);
   }

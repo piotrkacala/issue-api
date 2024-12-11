@@ -1,32 +1,28 @@
-import { IsDate, IsEnum, IsInt, IsNotEmpty, IsString, Min } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
 
 export class CreateTrackerDto {
     @IsString()
+    @IsNotEmpty()
     title: string;
 
     @IsString()
+    @IsOptional()
     description: string;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(['t', 'p', 'i', 'd'])
     status: string;
 
-    @IsDate()
-    created_date: Date;
-
-    @IsDate()
-    updated_date: Date;
-
-    @IsString()
-    @IsNotEmpty()
     @IsEnum(['e', 's', 't'])
     category: string;
 
     @IsInt()
     @Min(0)
+    @IsOptional()
     points: number;
 
     @IsInt()
+    @IsOptional()
     parentId: number;
 }

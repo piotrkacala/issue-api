@@ -8,10 +8,10 @@ export class Tracker {
     @Column({ type: 'varchar', length: 40 })
     title: string;
 
-    @Column({ type: 'varchar', length: 500 })
+    @Column({ type: 'varchar', length: 500, default: '' })
     description: string;
 
-    @Column({ type: 'enum', enum: ['t', 'p', 'i', 'd'] })
+    @Column({ type: 'enum', enum: ['t', 'p', 'i', 'd'], default: 't' })
     /**
      * t - TODO
      * p - IN_PROGRESS
@@ -20,10 +20,10 @@ export class Tracker {
      */
     status: string;
 
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(3)' })
     created_date: Date;
 
-    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENTTIMESTAMP(6)' }) //TODO onUpdate works in mysql only
+    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(3)' })
     updated_date: Date;
 
     @Column({ type: 'enum', enum: ['e', 's', 't'] })

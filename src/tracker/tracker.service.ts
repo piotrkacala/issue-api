@@ -16,7 +16,7 @@ export class TrackerService {
     const tracker: Tracker = new Tracker()
     tracker.title = input.title
     tracker.description = input.description
-    tracker.status = input.status || 't'
+    tracker.status = input.status
     tracker.category = category
 
     if (category === 's') {
@@ -51,8 +51,29 @@ export class TrackerService {
     return this.trackerRepository.findOneBy({ id })
   }
 
-  update(id: number, updateTrackerDto: UpdateTrackerDto) {
-    return `This action updates a #${id} tracker`;
+  async update(id: number, input: UpdateTrackerDto) {
+    const ticket = await this.trackerRepository.findOneBy({ id })
+    if (ticket === null) {
+      throw new Error('Ticket not found')
+    }
+
+    const order = ['t', 'p', 'i', 'd']//TODO
+    const prevStatusIndex = order.indexOf(ticket.status)
+    const newStatusIndex = order.indexOf(input.status)
+    const statusChange = newStatusIndex - prevStatusIndex
+
+    if (ticket.status &&
+      input.status &&
+      ticket.status !== input.status &&
+      statusChange !== 1) {
+      throw new Error('Illegal status transition')
+    }
+    return await this.trackerRepository.save({
+      ...ticket,
+      ...input,
+      created_date: ticket.created_date,
+      updated_date: new Date()
+    });
   }
 
   remove(id: number): Promise<DeleteResult> {
