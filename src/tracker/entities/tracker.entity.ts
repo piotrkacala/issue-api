@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn,UpdateDateColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Tracker {
@@ -20,9 +20,23 @@ export class Tracker {
      */
     status: string;
 
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)'})
-    created_date: Date
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    created_date: Date;
 
-    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENTTIMESTAMP(6)' })
-    updated_date: Date
+    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENTTIMESTAMP(6)' }) //TODO onUpdate works in mysql only
+    updated_date: Date;
+
+    @Column({ type: 'enum', enum: ['e', 's', 't'] })
+    /**
+     * e - Epic
+     * s - Story
+     * t - Subtask
+     */
+    category: string;
+
+    @Column({ nullable: true, type: 'integer' })
+    points: number;
+
+    @Column({nullable: true, type: 'integer'})
+    parentId: number
 }
