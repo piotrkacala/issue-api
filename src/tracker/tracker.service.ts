@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTrackerDto } from './dto/create-tracker.dto';
 import { UpdateTrackerDto } from './dto/update-tracker.dto';
 import { Tracker } from './entities/tracker.entity';
@@ -28,7 +28,7 @@ export class TrackerService {
   async update(id: number, input: UpdateTrackerDto) {
     const ticket = await this.trackerRepository.findOneBy({ id })
     if (ticket === null) {
-      throw new Error('Ticket not found')
+      throw new NotFoundException('Ticket not found')
     }
 
     const order: String[] = Object.values(Status)
@@ -40,7 +40,7 @@ export class TrackerService {
       input.status &&
       ticket.status !== input.status &&
       statusChange !== 1) {
-      throw new Error('Illegal status transition')
+      throw new BadRequestException('Illegal status transition')
     }
 
     const tracker = await this.checkAndTransform({
@@ -77,10 +77,10 @@ export class TrackerService {
       parent = await this.trackerRepository.findOneBy({ id: input.parentId })
     }
     if (category === Category.STORY && parent?.category !== Category.EPIC) {
-      throw new Error('Stories must belong to an Epic')
+      throw new BadRequestException('Stories must belong to an Epic')
     }
     if (category === Category.SUBTASK && parent?.category !== Category.STORY) {
-      throw new Error('Tasks must belong to a Story')
+      throw new BadRequestException('Tasks must belong to a Story')
     }
     tracker.parentId = input.parentId
     if (category === Category.EPIC) {
