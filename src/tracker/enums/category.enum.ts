@@ -1,5 +1,5 @@
 export enum Category {
-    EPIC = 'e',
-    STORY = 's',
-    SUBTASK = 't'
+  EPIC = 'e',
+  STORY = 's',
+  SUBTASK = 't',
 }

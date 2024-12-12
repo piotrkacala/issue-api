@@ -23,12 +23,12 @@ import { Tracker } from './tracker/entities/tracker.entity';
           entities: [Tracker],
           synchronize: true,
           logging: true,
-        }
-      }
-
+        };
+      },
     }),
-    TrackerModule,],
+    TrackerModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
