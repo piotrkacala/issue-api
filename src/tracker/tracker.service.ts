@@ -36,7 +36,7 @@ export class TrackerService {
       throw new NotFoundException('Ticket not found');
     }
 
-    const order: String[] = Object.values(Status);
+    const order: string[] = Object.values(Status);
     const prevStatusIndex = order.indexOf(ticket.status);
     const newStatusIndex = order.indexOf(input.status);
     const statusChange = newStatusIndex - prevStatusIndex;
