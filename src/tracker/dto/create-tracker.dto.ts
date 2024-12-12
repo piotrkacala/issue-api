@@ -8,12 +8,12 @@ export class CreateTrackerDto {
 
     @IsString()
     @IsOptional()
-    description: string;
+    description?: string;
 
     @IsString()
     @IsOptional()
     @IsEnum(Status)
-    status: string;
+    status?: string;
 
     @IsEnum(Category)
     category: string;
@@ -21,9 +21,9 @@ export class CreateTrackerDto {
     @IsInt()
     @Min(0)
     @IsOptional()
-    points: number;
+    points?: number;
 
     @IsInt()
     @IsOptional()
-    parentId: number;
+    parentId?: number;
 }
